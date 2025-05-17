@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RequestStatus {
+  pending
+  scheduled
+  completed
+  cancelled
+}
+
+enum PickupStatus {
+  scheduled
+  in_progress
+  done
+  missed
+}
+
+enum ComplaintStatus {
+  open
+  in_review
+  resolved
+}
+
+enum RoleType {
+  admin
+  resident
+}
+
+model Role {
+  role_id Int      @id @default(autoincrement())
+  name    String   @unique
+  role    RoleType
+  users   User[]
+}
+
+model User {
+  user_id       Int           @id @default(autoincrement())
+  role_id       Int
+  barangay_id   Int
+  first_name    String
+  last_name     String
+  email         String        @unique
+  password      String
+  phone_number  String        @unique
+  address       String
+  created_at    DateTime      @default(now())
+  role          Role          @relation(fields: [role_id], references: [role_id])
+  requests      ServiceRequest[]
+  complaints    Complaint[]
+  notifications Notification[]
+  waste_logs    WasteLog[]
+}
+
+model WasteType {
+  waste_type_id Int             @id @default(autoincrement())
+  name          String
+  description   String?
+  requests      ServiceRequest[]
+  waste_logs    WasteLog[]
+}
+
+model ServiceRequest {
+  request_id     Int           @id @default(autoincrement())
+  user_id        Int
+  waste_type_id  Int
+  requested_date DateTime
+  status         RequestStatus @default(pending)
+  user           User          @relation(fields: [user_id], references: [user_id])
+  waste_type     WasteType     @relation(fields: [waste_type_id], references: [waste_type_id])
+  pickups        Pickup[]
+}
+
+model Pickup {
+  pickup_id       Int           @id @default(autoincrement())
+  request_id      Int
+  scheduled_date  DateTime
+  route_id        Int?
+  status          PickupStatus @default(scheduled)
+  updated_at      DateTime      @default(now())
+  service_request ServiceRequest @relation(fields: [request_id], references: [request_id])
+  route           Route?        @relation(fields: [route_id], references: [route_id])
+  complaints      Complaint[]
+  routeAssignment RouteAssignment?
+}
+
+model Route {
+  route_id       Int                @id @default(autoincrement())
+  name           String
+  description    String?
+  created_at     DateTime           @default(now())
+  pickups        Pickup[]
+  routeAssignment RouteAssignment?
+}
+
+model RouteAssignment {
+  assignment_id Int    @id @default(autoincrement())
+  route_id      Int    @unique
+  pickup_id     Int    @unique
+  sequence_no   Int
+  route         Route  @relation(fields: [route_id], references: [route_id])
+  pickup        Pickup @relation(fields: [pickup_id], references: [pickup_id])
+}
+
+model Complaint {
+  complaint_id Int            @id @default(autoincrement())
+  user_id      Int
+  pickup_id    Int?
+  description  String
+  status       ComplaintStatus @default(open)
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  user         User           @relation(fields: [user_id], references: [user_id])
+  pickup       Pickup?        @relation(fields: [pickup_id], references: [pickup_id])
+}
+
+model Notification {
+  notification_id Int      @id @default(autoincrement())
+  user_id         Int
+  title           String
+  message         String
+  sent_at         DateTime @default(now())
+  is_read         Boolean  @default(false)
+  user            User     @relation(fields: [user_id], references: [user_id])
+}
+
+model WasteLog {
+  log_id        Int       @id @default(autoincrement())
+  user_id       Int
+  waste_type_id Int
+  quantity_kg   Decimal   @db.Decimal(6, 2)
+  log_date      DateTime
+  created_at    DateTime  @default(now())
+  user          User      @relation(fields: [user_id], references: [user_id])
+  waste_type    WasteType @relation(fields: [waste_type_id], references: [waste_type_id])
+}
