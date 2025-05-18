@@ -1,5 +1,57 @@
 @import "tailwindcss";
 
+@theme {
+  /* Base Colors */
+  --color-base-green-dark: #328e6e; /* Primary brand color */
+  --color-base-green-medium: #67ae6e; /* Interactive elements */
+  --color-base-green-light: #90c67c; /* Accents & highlights */
+  --color-base-sage-light: #e1eebc; /* Backgrounds & surfaces */
+
+  /* Text Colors */
+  --color-text-primary: var(--color-base-green-dark);
+  --color-text-secondary: #4a5568; /* Muted text */
+  --color-text-on-dark: var(--color-base-sage-light);
+  --color-text-success: var(--color-base-green-dark);
+
+  /* Background Colors */
+  --color-bg-primary: var(--color-base-sage-light);
+  --color-bg-secondary: #ffffff;
+  --color-bg-success: #f0faf5;
+  --color-bg-button-hover: var(--color-base-green-light);
+
+  /* Button Colors */
+  --color-button-primary-bg: var(--color-base-green-medium);
+  --color-button-primary-text: #ffffff;
+  --color-button-secondary-bg: var(--color-base-sage-light);
+  --color-button-secondary-text: var(--color-base-green-dark);
+
+  /* Border Colors */
+  --color-border-primary: #e2e8f0;
+  --color-border-accent: var(--color-base-green-light);
+
+  /* Gradients */
+  --gradient-brand-vertical: linear-gradient(
+    180deg,
+    var(--color-base-green-medium) 0%,
+    var(--color-base-green-light) 100%
+  );
+
+  --gradient-brand-diagonal: linear-gradient(
+    135deg,
+    var(--color-base-green-dark) 0%,
+    var(--color-base-green-medium) 100%
+  );
+
+  /* Special Effects */
+  --color-shadow-primary: rgba(50, 142, 110, 0.1);
+}
+
 body {
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
 }
