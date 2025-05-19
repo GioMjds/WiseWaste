@@ -55,7 +55,7 @@ export type WebSocketEvent =
 
 // Type for event handlers
 export type EventHandler<T extends WebSocketEvent["type"]> = (
-  data: Extract<WebSocketEvent, { type: T }>
+  data: Extract<WebSocketEvent, { type: T }>,
 ) => void;
 
 export type EventHandlers = {

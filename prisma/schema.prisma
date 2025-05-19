@@ -39,13 +39,6 @@ enum RoleType {
   resident
 }
 
-model Role {
-  role_id Int      @id @default(autoincrement())
-  name    String   @unique
-  role    RoleType
-  users   User[]
-}
-
 model User {
   user_id       Int           @id @default(autoincrement())
   role_id       Int
@@ -57,7 +50,7 @@ model User {
   phone_number  String        @unique
   address       String
   created_at    DateTime      @default(now())
-  role          Role          @relation(fields: [role_id], references: [role_id])
+  role          String[]                
   requests      ServiceRequest[]
   complaints    Complaint[]
   notifications Notification[]

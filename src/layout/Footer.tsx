@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 export const Footer = () => {
   return (
-    <footer className="bg-[var(--color-base-green-dark)] ">
+    <footer className="bg-base-green-dark">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-4 gap-8 text-[var(--color-text-on-dark)]">
+        <div className="grid md:grid-cols-4 gap-8 text-text-on-dark">
           {/* Brand Column */}
           <motion.div
             className="space-y-4"
@@ -20,7 +20,7 @@ export const Footer = () => {
               Cultivating cleaner communities through smart waste solutions
             </p>
             <div className="flex space-x-4">
-              {['🌿', '♻️', '🌎'].map((icon, i) => (
+              {["🌿", "♻️", "🌎"].map((icon, i) => (
                 <motion.span
                   key={i}
                   className="text-xl"
@@ -41,7 +41,7 @@ export const Footer = () => {
           >
             <h4 className="font-semibold text-lg">Quick Links</h4>
             <nav className="flex flex-col space-y-2">
-              {['About', 'Services', 'Blog', 'Contact'].map((link) => (
+              {["About", "Services", "Blog", "Contact"].map((link) => (
                 <Link
                   href={`/${link.toLowerCase()}`}
                   key={link}
@@ -81,7 +81,7 @@ export const Footer = () => {
               <input
                 type="email"
                 placeholder="Your email"
-                className="bg-[var(--color-base-sage-light)] rounded-lg px-4 py-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-secondary)] focus:outline-none"
+                className="rounded-lg px-4 py-2 bg-base-sage-light text-text-primary placeholder-text-secondary focus:outline-none"
               />
               <motion.button
                 className="bg-[var(--color-button-primary-bg)] text-white px-4 py-2 rounded-lg hover:bg-[var(--color-bg-button-hover)] transition-colors"
@@ -95,13 +95,22 @@ export const Footer = () => {
 
         {/* Copyright */}
         <div className="border-t border-[var(--color-base-green-medium)] mt-12 pt-6 text-center text-sm text-[var(--color-text-on-dark)] opacity-80">
-          <p>© {new Date().getFullYear()} WiseWaste. Cultivating greener communities</p>
+          <p>
+            © {new Date().getFullYear()} WiseWaste. Cultivating greener
+            communities
+          </p>
           <div className="mt-2">
-            <Link href="/privacy" className="hover:text-[var(--color-base-sage-light)] transition-colors">
+            <Link
+              href="/privacy"
+              className="hover:text-[var(--color-base-sage-light)] transition-colors"
+            >
               Privacy Policy
             </Link>
             <span className="mx-2">•</span>
-            <Link href="/terms" className="hover:text-[var(--color-base-sage-light)] transition-colors">
+            <Link
+              href="/terms"
+              className="hover:text-[var(--color-base-sage-light)] transition-colors"
+            >
               Terms of Service
             </Link>
           </div>
