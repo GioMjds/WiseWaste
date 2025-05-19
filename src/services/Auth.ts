@@ -3,6 +3,7 @@ import { API } from "./AxiosURLs";
 export const login = async (email: string, password: string) => {
     try {
         const response = await API.post("auth/login", {
+            action: "login",
             email: email,
             password: password,
         }, {
@@ -16,9 +17,10 @@ export const login = async (email: string, password: string) => {
     }
 };
 
-export const signup = async (email: string, password: string, confirmPassword: string) => {
+export const sendRegisterOtp = async (email: string, password: string, confirmPassword: string) => {
     try {
-        const response = await API.post("auth/register", {
+        const response = await API.post("auth/send_register_otp", {
+            action: "send_register_otp",
             email: email,
             password: password,
             confirmPassword: confirmPassword,
@@ -33,9 +35,25 @@ export const signup = async (email: string, password: string, confirmPassword: s
     }
 };
 
+export const verifyRegisterOtp = async (email: string, otp: string) => {
+    try {
+        const response = await API.post('auth/verify_register_otp', {
+            email: email,
+            otp: otp,
+        }, {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error verifying OTP: ${error}`);
+        throw error;
+    }
+};
+
 export const logout = async () => {
     try {
-        const response = await API.post("auth/logout", {}, {
+        const response = await API.post("auth/logout", {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
         });
@@ -44,4 +62,4 @@ export const logout = async () => {
         console.error(`Error logging out: ${error}`);
         throw error;
     }
-}
+};

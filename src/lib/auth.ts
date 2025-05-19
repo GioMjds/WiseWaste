@@ -20,7 +20,7 @@ export async function decrypt(token: string) {
   return payload;
 }
 
-export async function createSession(userId: string) {
+export async function createSession(userId: string | number) {
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
   const session = await encrypt({ userId, expiresAt });
 

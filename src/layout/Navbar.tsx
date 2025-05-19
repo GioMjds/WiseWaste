@@ -17,7 +17,7 @@ export const Navbar = () => {
 
   return (
     <motion.nav
-      className="bg-[var(--color-bg-secondary)] shadow-sm w-full"
+      className="bg-bg-secondary shadow-sm w-full"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -34,7 +34,7 @@ export const Navbar = () => {
                 height={37}
                 priority
                 className="inline-block mr-2"
-              />{" "}
+              />
               WiseWaste
             </Link>
           </motion.div>
@@ -50,11 +50,10 @@ export const Navbar = () => {
                 >
                   <Link
                     href={item.href}
-                    className={`px-3 py-2 rounded-md text-lg font-medium ${
-                      pathname === item.href
+                    className={`px-3 py-2 rounded-md text-lg font-medium ${pathname === item.href
                         ? "bg-bg-success text-text-success"
                         : "text-text-secondary hover:bg-bg-button-hover hover:text-white"
-                    } transition-colors duration-300`}
+                      } transition-colors duration-300`}
                   >
                     {item.name}
                   </Link>
@@ -68,12 +67,11 @@ export const Navbar = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Link
-                    href="/resident/login"
-                    className={`px-4 py-2 rounded-full text-lg font-semibold transition-colors duration-300 ${
-                      pathname === "/login"
+                    href="/login"
+                    className={`px-4 py-2 rounded-full text-lg font-semibold transition-colors duration-300 ${pathname === "/login"
                         ? "bg-bg-success text-text-success"
                         : "bg-button-secondary-bg text-button-secondary-text hover:bg-bg-button-hover hover:text-white"
-                    }`}
+                      }`}
                   >
                     Login
                   </Link>
@@ -83,12 +81,11 @@ export const Navbar = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Link
-                    href="/resident/register"
-                    className={`px-4 py-2 rounded-full text-lg font-semibold transition-colors duration-300 ${
-                      pathname === "/register"
+                    href="/register"
+                    className={`px-4 py-2 rounded-full text-lg font-semibold transition-colors duration-300 ${pathname === "/register"
                         ? "bg-bg-success text-text-success"
                         : "bg-button-primary-bg text-button-primary-text hover:bg-bg-button-hover hover:text-white"
-                    }`}
+                      }`}
                   >
                     Register
                   </Link>
@@ -101,7 +98,7 @@ export const Navbar = () => {
           <div className="md:hidden">
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-md text-[var(--color-text-primary)] hover:bg-[var(--color-bg-button-hover)] hover:text-white"
+              className="p-2 rounded-md text-text-primary hover:bg-bg-button-hover hover:text-white"
               whileTap={{ scale: 0.95 }}
               aria-label="Toggle menu"
             >
@@ -150,11 +147,10 @@ export const Navbar = () => {
                   >
                     <Link
                       href={item.href}
-                      className={`block px-3 py-2 rounded-md text-base font-medium ${
-                        pathname === item.href
+                      className={`block px-3 py-2 rounded-md text-base font-medium ${pathname === item.href
                           ? "bg-[var(--color-bg-success)] text-[var(--color-text-success)]"
                           : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-button-hover)] hover:text-white"
-                      }`}
+                        }`}
                     >
                       {item.name}
                     </Link>
@@ -170,11 +166,10 @@ export const Navbar = () => {
                 >
                   <Link
                     href="/login"
-                    className={`block px-3 py-2 rounded-md text-base font-medium ${
-                      pathname === "/login"
+                    className={`block px-3 py-2 rounded-md text-base font-medium ${pathname === "/login"
                         ? "bg-[var(--color-bg-success)] text-[var(--color-text-success)]"
                         : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-button-hover)] hover:text-white"
-                    }`}
+                      }`}
                   >
                     Login
                   </Link>
@@ -187,11 +182,10 @@ export const Navbar = () => {
                 >
                   <Link
                     href="/register"
-                    className={`block px-3 py-2 rounded-md text-base font-medium ${
-                      pathname === "/register"
+                    className={`block px-3 py-2 rounded-md text-base font-medium ${pathname === "/register"
                         ? "bg-[var(--color-bg-success)] text-[var(--color-text-success)]"
                         : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-button-hover)] hover:text-white"
-                    }`}
+                      }`}
                   >
                     Register
                   </Link>
