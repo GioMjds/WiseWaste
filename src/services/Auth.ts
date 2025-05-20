@@ -35,9 +35,26 @@ export const sendRegisterOtp = async (email: string, password: string, confirmPa
     }
 };
 
+export const resendRegisterOtp = async (email: string) => {
+    try {
+        const response = await API.post("auth/resend_register_otp", {
+            action: "resend_register_otp",
+            email: email,
+        }, {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error resending OTP: ${error}`);
+        throw error;
+    }
+};
+
 export const verifyRegisterOtp = async (email: string, otp: string) => {
     try {
         const response = await API.post('auth/verify_register_otp', {
+            action: "verify_register_otp",
             email: email,
             otp: otp,
         }, {
@@ -54,6 +71,7 @@ export const verifyRegisterOtp = async (email: string, otp: string) => {
 export const logout = async () => {
     try {
         const response = await API.post("auth/logout", {
+            action: "logout",
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
         });

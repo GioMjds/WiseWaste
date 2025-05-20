@@ -117,16 +117,13 @@ export async function POST(request: NextRequest) {
 
             await createSession(user.user_id);
 
-            return NextResponse.json(
-                {
-                    message: "Resident logged in successfully!",
-                    user: {
-                        id: user.user_id,
-                        email: user.email,
-                    },
-                },
-                { status: 200 },
-            );
+            return NextResponse.json({
+                message: "Resident logged in successfully!",
+                user: {
+                    id: user.user_id,
+                    email: user.email,
+                }
+            }, { status: 200 });
         }
 
         if (action === "verify_register_otp") {
@@ -134,22 +131,16 @@ export async function POST(request: NextRequest) {
 
             const validation = otpStorage.validate(email, otp);
             if (!validation.valid) {
-                return NextResponse.json(
-                    {
-                        error: validation.error,
-                    },
-                    { status: 400 },
-                );
+                return NextResponse.json({
+                    error: validation.error,
+                }, { status: 400 });
             }
 
             const hashedPassword = validation.data?.hashedPassword;
             if (!hashedPassword) {
-                return NextResponse.json(
-                    {
-                        error: "No hashed password found",
-                    },
-                    { status: 400 },
-                );
+                return NextResponse.json({
+                    error: "No hashed password found",
+                }, { status: 400 });
             }
 
             const newUser = await prisma.users.create({
@@ -162,26 +153,45 @@ export async function POST(request: NextRequest) {
             otpStorage.delete(email);
             await createSession(newUser.user_id);
 
-            return NextResponse.json(
-                {
-                    message: "User registered successfully",
-                },
-                { status: 201 },
-            );
+            return NextResponse.json({
+                message: "User registered successfully",
+            }, { status: 201 },);
         }
 
-        return NextResponse.json(
-            {
-                error: "Invalid action",
-            },
-            { status: 400 },
-        );
+        if (action === "resend_register_otp") {
+            const { email } = body;
+
+            if (!email) {
+                return NextResponse.json({ 
+                    error: "Email is required"
+                }, { status: 400 });
+            }
+
+            const otpEntry = otpStorage.get(email);
+            if (!otpEntry) {
+                return NextResponse.json({ 
+                    error: "No OTP found for this email. Please register again."
+                }, { status: 400 });
+            }
+
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            otpStorage.set(email, otp, otpEntry.hashedPassword);
+
+            await sendOtpEmail(email, otp);
+
+            return NextResponse.json({
+                message: "OTP resent to email",
+                email: email,
+                otp: otp,
+            }, { status: 200 });
+        }
+
+        return NextResponse.json({
+            error: "Invalid action",
+        }, { status: 400 });
     } catch (error) {
-        return NextResponse.json(
-            {
-                error: `Internal Server Error: ${error}`,
-            },
-            { status: 500 },
-        );
+        return NextResponse.json({
+            error: `Internal Server Error: ${error}`,
+        }, { status: 500 });
     }
 }

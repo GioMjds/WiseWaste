@@ -8,16 +8,16 @@ datasource db {
 }
 
 model Users {
-  user_id       Int              @id @default(autoincrement())
+  user_id       Int               @id @default(autoincrement())
   barangay_id   Int?
   first_name    String?
   last_name     String?
-  email         String           @unique
+  email         String            @unique
   password      String
   phone_number  String?           @unique
   address       String?
-  created_at    DateTime         @default(now())
-  role          String[]
+  created_at    DateTime          @default(now())
+  role          RoleType          @default(resident)
   complaints    Complaint[]
   notifications Notification[]
   requests      ServiceRequest[]

@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { navigation } from "@/constants/navbar";
 import Image from "next/image";
 import logo from "../../public/logo.png";
 
@@ -42,24 +41,6 @@ export const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-6">
-              {navigation.map((item) => (
-                <motion.div
-                  key={item.name}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link
-                    href={item.href}
-                    className={`px-3 py-2 rounded-md text-lg font-medium ${pathname === item.href
-                        ? "bg-bg-success text-text-success"
-                        : "text-text-secondary hover:bg-bg-button-hover hover:text-white"
-                      } transition-colors duration-300`}
-                  >
-                    {item.name}
-                  </Link>
-                </motion.div>
-              ))}
-
               {/* Auth Buttons */}
               <div className="ml-auto flex space-x-4">
                 <motion.div
@@ -69,8 +50,8 @@ export const Navbar = () => {
                   <Link
                     href="/login"
                     className={`px-4 py-2 rounded-full text-lg font-semibold transition-colors duration-300 ${pathname === "/login"
-                        ? "bg-bg-success text-text-success"
-                        : "bg-button-secondary-bg text-button-secondary-text hover:bg-bg-button-hover hover:text-white"
+                      ? "bg-bg-success text-text-success"
+                      : "bg-button-secondary-bg text-button-secondary-text hover:bg-bg-button-hover hover:text-white"
                       }`}
                   >
                     Login
@@ -83,8 +64,8 @@ export const Navbar = () => {
                   <Link
                     href="/register"
                     className={`px-4 py-2 rounded-full text-lg font-semibold transition-colors duration-300 ${pathname === "/register"
-                        ? "bg-bg-success text-text-success"
-                        : "bg-button-primary-bg text-button-primary-text hover:bg-bg-button-hover hover:text-white"
+                      ? "bg-bg-success text-text-success"
+                      : "bg-button-primary-bg text-button-primary-text hover:bg-bg-button-hover hover:text-white"
                       }`}
                   >
                     Register
@@ -138,25 +119,6 @@ export const Navbar = () => {
               className="md:hidden"
             >
               <div className="px-2 pt-2 pb-3 space-y-1">
-                {navigation.map((item) => (
-                  <motion.div
-                    key={item.name}
-                    initial={{ x: -20 }}
-                    animate={{ x: 0 }}
-                    exit={{ x: -20 }}
-                  >
-                    <Link
-                      href={item.href}
-                      className={`block px-3 py-2 rounded-md text-base font-medium ${pathname === item.href
-                          ? "bg-[var(--color-bg-success)] text-[var(--color-text-success)]"
-                          : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-button-hover)] hover:text-white"
-                        }`}
-                    >
-                      {item.name}
-                    </Link>
-                  </motion.div>
-                ))}
-
                 {/* Mobile Auth Links */}
                 <motion.div
                   key="login"
@@ -167,8 +129,8 @@ export const Navbar = () => {
                   <Link
                     href="/login"
                     className={`block px-3 py-2 rounded-md text-base font-medium ${pathname === "/login"
-                        ? "bg-[var(--color-bg-success)] text-[var(--color-text-success)]"
-                        : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-button-hover)] hover:text-white"
+                      ? "bg-bg-success text-text-success"
+                      : "text-text-secondary hover:bg-bg-button-hover hover:text-white"
                       }`}
                   >
                     Login
@@ -183,8 +145,8 @@ export const Navbar = () => {
                   <Link
                     href="/register"
                     className={`block px-3 py-2 rounded-md text-base font-medium ${pathname === "/register"
-                        ? "bg-[var(--color-bg-success)] text-[var(--color-text-success)]"
-                        : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-button-hover)] hover:text-white"
+                      ? "bg-[var(--color-bg-success)] text-[var(--color-text-success)]"
+                      : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-button-hover)] hover:text-white"
                       }`}
                   >
                     Register

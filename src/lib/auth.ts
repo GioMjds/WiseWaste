@@ -20,9 +20,9 @@ export async function decrypt(token: string) {
   return payload;
 }
 
-export async function createSession(userId: string | number) {
+export async function createSession(userId: string | number, role?: string) {
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-  const session = await encrypt({ userId, expiresAt });
+  const session = await encrypt({ userId, role, expiresAt });
 
   (await cookies()).set("access_token", session, {
     httpOnly: true,

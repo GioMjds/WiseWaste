@@ -33,7 +33,7 @@ const LoginPage = () => {
             }
         },
         onError: (error) => {
-            console.error("Login failed:", error);
+            console.error(`Login failed: ${error}`);
         }
     });
 
@@ -86,7 +86,7 @@ const LoginPage = () => {
                     <div className="space-y-1">
                         <div className="relative">
                             <input
-                                type="password"
+                                type={passwordVisible ? "text" : "password"}
                                 placeholder="Password"
                                 {...register("password", {
                                     required: "Password is required",
@@ -98,6 +98,7 @@ const LoginPage = () => {
                                 className="w-full px-4 py-2 rounded-lg border border-border-primary focus:outline-none focus:ring-2 focus:ring-base-green-medium bg-base-sage-light text-base-green-dark"
                             />
                             <motion.button
+                                type="button"
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-base-green-dark)] hover:text-[var(--color-base-green-dark)] focus:outline-none"
