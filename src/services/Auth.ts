@@ -72,6 +72,7 @@ export const logout = async () => {
     try {
         const response = await API.post("auth/logout", {
             action: "logout",
+        }, {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
         });

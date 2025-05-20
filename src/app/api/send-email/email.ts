@@ -9,7 +9,6 @@ export async function sendOtpEmail(email: string, otp: string) {
         },
     });
 
-    // Create the HTML email template
     const htmlTemplate = `
     <!DOCTYPE html>
     <html lang="en">
@@ -315,7 +314,7 @@ export async function sendOtpEmail(email: string, otp: string) {
                     </div>
                     
                     <div style="margin-top: 20px; font-size: 12px; opacity: 0.8;">
-                        © 2025 WiseWaste. Caring for the planet, one wise choice at a time.
+                        © ${new Date().getFullYear()} WiseWaste. Caring for the planet, one wise choice at a time.
                     </div>
                 </div>
             </div>
@@ -326,22 +325,20 @@ export async function sendOtpEmail(email: string, otp: string) {
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
-        subject:
-            "🌿 Your WiseWaste Verification Code - Welcome to Sustainable Living!",
+        subject: "🌿 Your WiseWaste Verification Code - Welcome to Sustainable Living!",
         html: htmlTemplate,
-        // Fallback text version for email clients that don't support HTML
         text: `
-Welcome to WiseWaste! 🌿
+            Welcome to WiseWaste! 🌿
 
-Your verification code is: ${otp}
+            Your verification code is: ${otp}
 
-This code will expire in 10 minutes. Please use it to complete your account verification.
+            This code will expire in 10 minutes. Please use it to complete your account verification.
 
-Never share this code with anyone. WiseWaste will never ask for your verification code via phone or email.
+            Never share this code with anyone. WiseWaste will never ask for your verification code via phone or email.
 
-Welcome to our sustainable community!
+            Welcome to our sustainable community!
 
-© 2025 WiseWaste
+            © ${new Date().getFullYear()} | WiseWaste
         `,
     };
 

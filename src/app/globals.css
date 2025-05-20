@@ -24,6 +24,7 @@
   --color-button-primary-text: #ffffff;
   --color-button-secondary-bg: var(--color-base-sage-light);
   --color-button-secondary-text: var(--color-base-green-dark);
+  --color-button-danger: #e53e3e; /* Danger button color */
 
   /* Border Colors */
   --color-border-primary: #e2e8f0;

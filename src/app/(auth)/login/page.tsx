@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { login } from "@/services/Auth";
 import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -37,7 +37,7 @@ const LoginPage = () => {
         }
     });
 
-    const onSubmit = (data: LoginForm) => {
+    const onSubmit: SubmitHandler<LoginForm> = (data) => {
         mutate(data);
     }
 

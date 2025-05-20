@@ -21,6 +21,7 @@
     "framer-motion": "^12.12.1",
     "gsap": "^3.13.0",
     "jose": "^6.0.11",
+    "lucide-react": "^0.511.0",
     "motion": "^12.12.1",
     "next": "15.3.2",
     "next-cloudinary": "^6.16.0",

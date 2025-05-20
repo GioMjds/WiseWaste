@@ -13,21 +13,15 @@ export async function POST(request: NextRequest) {
         if (action === "logout") {
             const sessionId = request.cookies.get("access_token")?.value;
             if (!sessionId)
-                return NextResponse.json(
-                    {
-                        error: "No session found",
-                    },
-                    { status: 400 },
-                );
+                return NextResponse.json({
+                    error: "No session found",
+                }, { status: 400 });
 
             await deleteSession();
 
-            return NextResponse.json(
-                {
-                    message: "Logged out successfully",
-                },
-                { status: 200 },
-            );
+            return NextResponse.json({
+                message: "Logged out successfully",
+            }, { status: 200 });
         }
 
         if (action === "send_register_otp") {
@@ -97,31 +91,26 @@ export async function POST(request: NextRequest) {
             });
 
             if (!user) {
-                return NextResponse.json(
-                    {
-                        error: "User not found",
-                    },
-                    { status: 401 },
-                );
+                return NextResponse.json({
+                    error: "User not found",
+                }, { status: 401 },);
             }
 
             const isPasswordValid = await compare(password, user.password);
             if (!isPasswordValid) {
-                return NextResponse.json(
-                    {
-                        error: "Incorrect password",
-                    },
-                    { status: 401 },
-                );
+                return NextResponse.json({
+                    error: "Incorrect password",
+                }, { status: 401 });
             }
 
-            await createSession(user.user_id);
+            await createSession(user.user_id, user.role);
 
             return NextResponse.json({
                 message: "Resident logged in successfully!",
                 user: {
                     id: user.user_id,
                     email: user.email,
+                    role: user.role
                 }
             }, { status: 200 });
         }
@@ -151,7 +140,7 @@ export async function POST(request: NextRequest) {
             });
 
             otpStorage.delete(email);
-            await createSession(newUser.user_id);
+            await createSession(newUser.user_id, newUser.role);
 
             return NextResponse.json({
                 message: "User registered successfully",

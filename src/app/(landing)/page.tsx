@@ -5,6 +5,7 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -94,13 +95,12 @@ export default function Home() {
             Revolutionizing neighborhood recycling through AI-powered solutions
             and community engagement
           </motion.p>
-          <motion.button
+          <Link
+            href="/register"
             className="bg-button-primary-bg text-button-primary-text px-8 py-4 rounded-full text-lg font-semibold hover:bg-bg-button-hover transition-all"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
           >
             Join Smart Community
-          </motion.button>
+          </Link>
         </motion.div>
       </section>
 
