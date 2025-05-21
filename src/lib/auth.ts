@@ -79,12 +79,13 @@ export async function createSession(userId: number, role: string) {
     return sessionData;
   } catch (error) {
     console.error(`Error creating session: ${error}`);
-    throw error;
+    return null;
   }
 }
 
 export async function deleteSession() {
   (await cookies()).delete("access_token");
+  (await cookies()).delete("refresh_token");
 }
 
 export async function getSession(): Promise<SessionData | null> {
@@ -105,12 +106,27 @@ export async function getSession(): Promise<SessionData | null> {
   }
 }
 
-export async function isAuthenticated() {
+export async function getCurrentUser() {
   const session = await getSession();
-  return !!session;
-}
+  if (!session) return null;
 
-export async function hasRole(requiredRole: 'admin' | 'resident') {
-  const session = await getSession();
-  return session?.role === requiredRole;
+  try {
+    const user = await prisma.users.findUnique({
+      where: { user_id: session.userId },
+      select: {
+        user_id: true,
+        email: true,
+        role: true,
+        first_name: true,
+        last_name: true,
+        phone_number: true,
+        address: true,
+      }
+    });
+
+    return user;
+  } catch (error) {
+    console.error(`Error getting current user: ${error}`);
+    return null;
+  }
 }

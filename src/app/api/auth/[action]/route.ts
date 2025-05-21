@@ -4,6 +4,15 @@ import { otpStorage } from "@/utils/otpCache";
 import { compare, hash } from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 import { sendOtpEmail } from "../../send-email/email";
+import { v2 as cloudinary } from "cloudinary";
+import path from "path";
+import fs from "fs";
+
+cloudinary.config({
+    cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 export async function POST(request: NextRequest) {
     try {
@@ -28,30 +37,21 @@ export async function POST(request: NextRequest) {
             const { email, password, confirmPassword } = body;
 
             if (!email || !password || !confirmPassword) {
-                return NextResponse.json(
-                    {
-                        error: "Email, password and confirm password are required",
-                    },
-                    { status: 400 },
-                );
+                return NextResponse.json({
+                    error: "Email, password and confirm password are required",
+                }, { status: 400 });
             }
 
             if (!confirmPassword) {
-                return NextResponse.json(
-                    {
-                        error: "Confirm password is required",
-                    },
-                    { status: 400 },
-                );
+                return NextResponse.json({
+                    error: "Confirm password is required",
+                }, { status: 400 });
             }
 
             if (password !== confirmPassword) {
-                return NextResponse.json(
-                    {
-                        error: "Passwords do not match",
-                    },
-                    { status: 400 },
-                );
+                return NextResponse.json({
+                    error: "Passwords do not match",
+                }, { status: 400 });
             }
 
             const existingUser = await prisma.users.findUnique({
@@ -132,10 +132,29 @@ export async function POST(request: NextRequest) {
                 }, { status: 400 });
             }
 
+            let profileImageUrl;
+            try {
+                const defaultImagePath = path.join(process.cwd(), 'public', 'Default_pfp.jpg');
+                const imageBuffer = fs.readFileSync(defaultImagePath);
+                const base64Image = `data:image/jpeg;base64,${imageBuffer.toString('base64')}`;
+
+                const uploadResponse = await cloudinary.uploader.upload(base64Image, {
+                    folder: "wisewaste/profiles",
+                    public_id: `user-${email.replace(/[@.]/g, "-")}`, // Create URL-safe ID from email
+                    overwrite: true,
+                    resource_type: "image"
+                });
+
+                profileImageUrl = uploadResponse.secure_url;
+            } catch (CloudinaryError) {
+                console.error(`Error uploading image to Cloudinary: ${CloudinaryError}`);
+            }
+
             const newUser = await prisma.users.create({
                 data: {
                     email: email,
                     password: hashedPassword,
+                    profile_image: profileImageUrl
                 },
             });
 
@@ -144,6 +163,12 @@ export async function POST(request: NextRequest) {
 
             return NextResponse.json({
                 message: "User registered successfully",
+                user: {
+                    id: newUser.user_id,
+                    email: newUser.email,
+                    role: newUser.role,
+                    profile_image: newUser.profile_image,
+                }
             }, { status: 201 },);
         }
 

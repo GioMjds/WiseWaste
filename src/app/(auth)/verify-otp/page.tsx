@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useRef } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { resendRegisterOtp, verifyRegisterOtp } from "@/services/Auth";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { verifyRegisterOtp, resendRegisterOtp } from "@/services/Auth";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 const VerifyOtpPage = () => {
     const router = useRouter();
@@ -20,15 +20,19 @@ const VerifyOtpPage = () => {
     const [resendLoading, setResendLoading] = useState(false);
     const [resendMessage, setResendMessage] = useState<string | null>(null);
 
+    const [cooldownTime, setCooldownTime] = useState(0);
+    const [isCooldown, setIsCooldown] = useState(false);
+
     const { mutate, isPending } = useMutation({
         mutationFn: async () => {
             const otpNumber = otp.join("");
             return await verifyRegisterOtp(email, otpNumber);
         },
         onSuccess: (response) => {
-            if (response && response.otp) {
+            if (response && response.user) {
                 setSuccess("OTP verified! Redirecting...");
-                router.push("/")
+                if (response.user.role === 'admin') router.push("/admin");
+                else router.push("/");
             }
         },
         onError: (err: any) => {
@@ -37,6 +41,32 @@ const VerifyOtpPage = () => {
             inputRefs.current[0]?.focus();
         }
     });
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout | null = null;
+
+        if (isCooldown) {
+            timer = setInterval(() => {
+                setCooldownTime((prevTime) => {
+                    if (prevTime <= 1) {
+                        setIsCooldown(false);
+                        return 0;
+                    }
+                    return prevTime - 1;
+                });
+            }, 1000);
+        }
+
+        return () => {
+            if (timer) clearInterval(timer);
+        };
+    }, [isCooldown]);
+
+    const formatCooldownTime = () => {
+        const minutes = Math.floor(cooldownTime / 60);
+        const seconds = cooldownTime % 60;
+        return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+    };
 
     const handleChange = (index: number, value: string) => {
         if (/^[0-9]$/.test(value)) {
@@ -78,10 +108,13 @@ const VerifyOtpPage = () => {
         setResendLoading(true);
         setResendMessage(null);
         setError(null);
+
         try {
             const response = await resendRegisterOtp(email);
-            if (response.status === 200) {
+            if (response && response.message) {
                 setResendMessage("OTP resent successfully!");
+                setCooldownTime(120);
+                setIsCooldown(true);
             }
         } catch (error) {
             console.error(`Error resending OTP: ${error}`);
@@ -203,25 +236,34 @@ const VerifyOtpPage = () => {
                     </motion.button>
                 </form>
 
-                <p className="text-center mt-6 text-text-secondary">
-                    Didn&apos;t receive code?{' '}
-                    <button
-                        className={`text-base-green-dark font-semibold hover:underline`}
-                        onClick={handleResendOtp}
-                        disabled={resendLoading}
-                    >
-                        {resendLoading ? "Resending..." : "Resend OTP"}
-                    </button>
-                </p>
-                {resendMessage && (
-                    <motion.p
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-base-green-dark text-center font-medium mt-2"
-                    >
-                        {resendMessage}
-                    </motion.p>
-                )}
+                <div className="text-center mt-6">
+                    <p className="text-text-secondary">
+                        Didn&apos;t receive code?{' '}
+                        {isCooldown ? (
+                            <span className="text-gray-400">
+                                Resend available in {formatCooldownTime()}
+                            </span>
+                        ) : (
+                            <button
+                                className={`text-base-green-dark font-semibold hover:underline ${resendLoading ? "opacity-50 cursor-not-allowed" : ""
+                                    }`}
+                                onClick={handleResendOtp}
+                                disabled={resendLoading || isCooldown}
+                            >
+                                {resendLoading ? "Resending..." : "Resend OTP"}
+                            </button>
+                        )}
+                    </p>
+                    {resendMessage && (
+                        <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-base-green-dark text-center font-medium mt-2"
+                        >
+                            {resendMessage}
+                        </motion.p>
+                    )}
+                </div>
             </motion.div>
         </div>
     );

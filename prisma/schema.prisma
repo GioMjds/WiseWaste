@@ -16,6 +16,7 @@ model Users {
   password      String
   phone_number  String?           @unique
   address       String?
+  profile_image String?
   created_at    DateTime          @default(now())
   role          RoleType          @default(resident)
   complaints    Complaint[]

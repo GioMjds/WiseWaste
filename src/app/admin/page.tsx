@@ -1,8 +1,7 @@
+'use server';
 
-const AdminDashboard = () => {
+export default async function AdminPage() {
   return (
-    <div>AdminDashboard</div>
+    <h1>Admin Page: Server Component</h1>
   )
 }
-
-export default AdminDashboard

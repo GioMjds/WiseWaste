@@ -4,6 +4,7 @@ import { Providers } from "../providers";
 import { ReactNode } from "react";
 import "../globals.css";
 import Sidebar from "@/layout/Sidebar";
+import UserDetail from "@/components/server/UserDetail";
 
 const outfit = Outfit({
     variable: "--font-outfit",
@@ -20,16 +21,10 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <html lang="en">
             <body className={`${outfit.variable} antialiased`}>
                 <Providers>
-                    <div className="flex flex-col min-h-screen">
-                        <div className="flex flex-1">
-                            <Sidebar role="admin" />
-                            <main className="flex-grow ml-[270px] overflow-y-auto p-4">
-                                {children}
-                            </main>
-                        </div>
-                    </div>
+                    <Sidebar role="admin" userDetails={<UserDetail />} />
+                    {children}
                 </Providers>
-            </body>
-        </html>
+            </body >
+        </html >
     );
 }

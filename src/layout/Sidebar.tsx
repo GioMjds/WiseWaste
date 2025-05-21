@@ -19,6 +19,7 @@ interface MenuItem {
 
 interface SidebarProps {
     role: 'resident' | 'admin';
+    userDetails: ReactNode;
 }
 
 const residentMenu: MenuItem[] = [
@@ -35,10 +36,10 @@ const adminMenu: MenuItem[] = [
     { label: 'Routes', href: '/admin/routes', icon: <ClipboardList size={20} /> },
     { label: 'Analytics', href: '/admin/analytics', icon: <PieChart size={20} /> },
     { label: 'Complaints', href: '/admin/complaints', icon: <MessageCircle size={20} /> },
-    { label: 'Users', href: '/admin/users', icon: <Users size={20} /> },
+    { label: 'Manage Users', href: '/admin/users', icon: <Users size={20} /> },
 ];
 
-export default function Sidebar({ role }: SidebarProps) {
+export default function Sidebar({ role, userDetails }: SidebarProps) {
     const router = useRouter();
     const pathname = usePathname();
     const menuItems = role === 'admin' ? adminMenu : residentMenu;
@@ -55,12 +56,7 @@ export default function Sidebar({ role }: SidebarProps) {
 
     return (
         <>
-            <motion.aside
-                initial={{ x: -250, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                className="fixed top-0 left-0 h-full w-64 bg-bg-secondary border-r border-border-primary shadow-lg z-10"
-            >
+            <aside className="fixed top-0 left-0 h-full w-64 bg-bg-secondary border-r border-border-primary shadow-lg z-10">
                 <div className="h-16 border-b border-text-primary shadow-shadow-primary flex items-center justify-center bg-gradient-brand-diagonal">
                     <Image
                         src={logo}
@@ -70,32 +66,33 @@ export default function Sidebar({ role }: SidebarProps) {
                         className="rounded-full mr-2"
                         priority
                     />
-                    <h1 className="text-2xl font-bold text-text-primary">WiseWaste</h1>
+                    <h1 className="text-3xl font-bold text-text-primary">WiseWaste</h1>
                 </div>
-                <nav className="mt-6 flex flex-col h-[calc(100%-4rem)]">
-                    <div className="">
-                        {menuItems.map((item) => {
-                            const active = pathname === item.href;
-                            return (
-                                <Link key={item.href} href={item.href}>
-                                    <motion.div
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg cursor-pointer transition-colors duration-200
-                                        ${active ? 'bg-base-green-light text-text-on-dark' : 'text-text-primary hover:bg-bg-button-hover'}`}
-                                    >
-                                        <span className="mr-3">{item.icon}</span>
-                                        <span className="font-medium">{item.label}</span>
-                                    </motion.div>
-                                </Link>
-                            );
-                        })}
-                    </div>
 
-                    <div className="mt-auto mb-6">
+                {userDetails}
+
+                <nav className="mt-6 flex flex-col h-[calc(100%-4rem)]">
+                    {menuItems.map((item) => {
+                        const active = pathname === item.href;
+                        return (
+                            <Link key={item.href} href={item.href}>
+                                <motion.div
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg cursor-pointer transition-colors duration-200
+                                        ${active ? 'bg-base-green-light text-text-on-dark' : 'text-text-primary hover:bg-bg-button-hover'}`}
+                                >
+                                    <span className="mr-3">{item.icon}</span>
+                                    <span className="font-medium">{item.label}</span>
+                                </motion.div>
+                            </Link>
+                        );
+                    })}
+
+                    <div className="mt-auto p-4 mb-6">
                         <motion.button
                             whileTap={{ scale: 0.95 }}
-                            className="flex items-center w-full p-4 rounded-lg cursor-pointer text-text-primary hover:bg-bg-button-hover border-t-2 border-text-primary transition-colors duration-200"
+                            className="flex items-center justify-center w-full uppercase p-4 rounded-lg cursor-pointer text-text-primary hover:bg-button-danger hover:text-white transition-colors duration-200"
                             onClick={() => setShowLogoutModal(true)}
                         >
                             <LogOut size={20} className="mr-3" />
@@ -103,7 +100,7 @@ export default function Sidebar({ role }: SidebarProps) {
                         </motion.button>
                     </div>
                 </nav>
-            </motion.aside>
+            </aside>
             <Modal
                 isOpen={showLogoutModal}
                 onCancel={() => setShowLogoutModal(false)}

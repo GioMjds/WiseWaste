@@ -1,15 +1,15 @@
 "use client";
 
+import { login } from "@/services/Auth";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { login } from "@/services/Auth";
-import { useMutation } from "@tanstack/react-query";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 interface LoginForm {
     email: string;
@@ -29,7 +29,8 @@ const LoginPage = () => {
         },
         onSuccess: (response) => {
             if (response && response.user) {
-                router.push("/");
+                if (response.user.role === "admin") router.push("/admin");
+                else router.push("/resident");
             }
         },
         onError: (error) => {

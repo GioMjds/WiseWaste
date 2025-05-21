@@ -2,14 +2,18 @@ import { API } from "./AxiosURLs";
 
 export const login = async (email: string, password: string) => {
     try {
-        const response = await API.post("auth/login", {
-            action: "login",
-            email: email,
-            password: password,
-        }, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        });
+        const response = await API.post(
+            "auth/login",
+            {
+                action: "login",
+                email: email,
+                password: password,
+            },
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            },
+        );
         return response.data;
     } catch (error) {
         console.error(`Error logging in: ${error}`);
@@ -19,15 +23,19 @@ export const login = async (email: string, password: string) => {
 
 export const sendRegisterOtp = async (email: string, password: string, confirmPassword: string) => {
     try {
-        const response = await API.post("auth/send_register_otp", {
-            action: "send_register_otp",
-            email: email,
-            password: password,
-            confirmPassword: confirmPassword,
-        }, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        });
+        const response = await API.post(
+            "auth/send_register_otp",
+            {
+                action: "send_register_otp",
+                email: email,
+                password: password,
+                confirmPassword: confirmPassword,
+            },
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            },
+        );
         return response.data;
     } catch (error) {
         console.error(`Error registering: ${error}`);
@@ -37,13 +45,17 @@ export const sendRegisterOtp = async (email: string, password: string, confirmPa
 
 export const resendRegisterOtp = async (email: string) => {
     try {
-        const response = await API.post("auth/resend_register_otp", {
-            action: "resend_register_otp",
-            email: email,
-        }, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        });
+        const response = await API.post(
+            "auth/resend_register_otp",
+            {
+                action: "resend_register_otp",
+                email: email,
+            },
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            },
+        );
         return response.data;
     } catch (error) {
         console.error(`Error resending OTP: ${error}`);
@@ -53,14 +65,18 @@ export const resendRegisterOtp = async (email: string) => {
 
 export const verifyRegisterOtp = async (email: string, otp: string) => {
     try {
-        const response = await API.post('auth/verify_register_otp', {
-            action: "verify_register_otp",
-            email: email,
-            otp: otp,
-        }, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        });
+        const response = await API.post(
+            "auth/verify_register_otp",
+            {
+                action: "verify_register_otp",
+                email: email,
+                otp: otp,
+            },
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            },
+        );
         return response.data;
     } catch (error) {
         console.error(`Error verifying OTP: ${error}`);
@@ -70,12 +86,16 @@ export const verifyRegisterOtp = async (email: string, otp: string) => {
 
 export const logout = async () => {
     try {
-        const response = await API.post("auth/logout", {
-            action: "logout",
-        }, {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        });
+        const response = await API.post(
+            "auth/logout",
+            {
+                action: "logout",
+            },
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            },
+        );
         return response.data;
     } catch (error) {
         console.error(`Error logging out: ${error}`);
