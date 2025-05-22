@@ -64,7 +64,7 @@ export const Footer = () => {
             <div className="space-y-2 text-sm">
               <p>123 Green Way</p>
               <p>Eco City, EC 12345</p>
-              <p>hello@wisewaste.com</p>
+              <p>wisewasteofficial@gmail.com</p>
               <p>(555) 123-4567</p>
             </div>
           </motion.div>
@@ -96,8 +96,7 @@ export const Footer = () => {
         {/* Copyright */}
         <div className="border-t border-[var(--color-base-green-medium)] mt-12 pt-6 text-center text-sm text-[var(--color-text-on-dark)] opacity-80">
           <p>
-            © {new Date().getFullYear()} WiseWaste. Cultivating greener
-            communities
+            &copy; {new Date().getFullYear()} WiseWaste | Cultivating greener communities
           </p>
           <div className="mt-2">
             <Link

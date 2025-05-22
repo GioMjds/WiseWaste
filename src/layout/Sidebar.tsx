@@ -1,15 +1,14 @@
 'use client';
 
-import { ReactNode, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
-import { Home, Calendar, ClipboardList, User, Users, PieChart, MessageCircle, LogOut } from "lucide-react";
-import Image from "next/image";
-import { logout } from "@/services/Auth";
-import logo from "../../public/logo.png";
-import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
+import { logout } from "@/services/Auth";
+import { motion } from "framer-motion";
+import { Calendar, ClipboardList, Home, LogOut, MessageCircle, PieChart, User, Users } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { ReactNode, useState } from "react";
+import logo from "../../public/logo.png";
 
 interface MenuItem {
     label: string;
@@ -44,13 +43,17 @@ export default function Sidebar({ role, userDetails }: SidebarProps) {
     const pathname = usePathname();
     const menuItems = role === 'admin' ? adminMenu : residentMenu;
     const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleLogout = async () => {
         try {
+            setLoading(true);
             await logout();
             router.push('/');
         } catch (error) {
             console.error(`Logout failed: ${error}`);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -109,7 +112,8 @@ export default function Sidebar({ role, userDetails }: SidebarProps) {
                 description="Are you sure you want to log out? You will be redirected to the login page."
                 cancelText="Cancel"
                 confirmText="Yes, Log Out"
-                loading={false}
+                loading={loading}
+                loadingText="Logging Out..."
                 icon={<LogOut size={24} className="text-base-green-light" />}
             />
         </>

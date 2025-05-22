@@ -13,7 +13,7 @@ export const login = async (email: string, password: string) => {
         return response.data;
     } catch (error) {
         console.error(`Error logging in: ${error}`);
-        return null;
+        throw error;
     }
 };
 
@@ -25,29 +25,25 @@ export const sendRegisterOtp = async (email: string, password: string, confirmPa
             password: password,
             confirmPassword: confirmPassword,
         }, {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
         });
         return response.data;
     } catch (error) {
         console.error(`Error registering: ${error}`);
-        return null;
+        throw error;
     }
 };
 
 export const resendRegisterOtp = async (email: string) => {
     try {
-        const response = await API.post(
-            "auth/resend_register_otp",
-            {
-                action: "resend_register_otp",
-                email: email,
-            },
-            {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-            },
-        );
+        const response = await API.post("auth/resend_register_otp",{
+            action: "resend_register_otp",
+            email: email,
+        }, {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        });
         return response.data;
     } catch (error) {
         console.error(`Error resending OTP: ${error}`);
@@ -91,6 +87,25 @@ export const logout = async () => {
         return response.data;
     } catch (error) {
         console.error(`Error logging out: ${error}`);
+        throw error;
+    }
+};
+
+export const updateProfile = async (profileData: {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    address: string;
+    profileImage?: string;
+}) => {
+    try {
+        const response = await API.patch("auth/profile", profileData, {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating profile: ${error}`);
         throw error;
     }
 };

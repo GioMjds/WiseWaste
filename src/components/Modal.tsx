@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Leaf, X, Loader } from "lucide-react";
+import { Leaf, Loader, X } from "lucide-react";
 import { FC, MouseEvent, ReactNode, useCallback, useEffect } from "react";
 
 interface ModalProps {
@@ -15,10 +15,23 @@ interface ModalProps {
     className?: string;
     isOpen: boolean;
     loading?: boolean;
+    loadingText?: string;
 }
 
 
-const Modal: FC<ModalProps> = ({ icon, title, description, onCancel, onConfirm, cancelText, confirmText, className, isOpen, loading }) => {
+const Modal: FC<ModalProps> = ({
+    icon,
+    title,
+    description,
+    onCancel,
+    onConfirm,
+    cancelText = "Cancel",
+    confirmText = "Confirm",
+    className,
+    isOpen,
+    loading = false,
+    loadingText = "Processing..."
+}) => {
     const handleCancel = useCallback(() => {
         onCancel();
     }, [onCancel]);
@@ -127,13 +140,14 @@ const Modal: FC<ModalProps> = ({ icon, title, description, onCancel, onConfirm, 
                                     </button>
                                     <button
                                         onClick={handleConfirm}
-                                        className="px-4 py-2 cursor-pointer rounded-lg bg-button-danger text-button-primary-text transition-colors flex items-center gap-2"
+                                        className={`px-4 py-2 rounded-lg bg-button-danger text-button-primary-text transition-colors flex items-center gap-2 min-w-[120px] justify-center
+                                            ${loading ? 'bg-button-danger/50 cursor-not-allowed' : 'cursor-pointer'}`}
                                         disabled={loading}
                                     >
                                         {loading ? (
                                             <>
                                                 <Loader className="animate-spin" size={18} />
-                                                Processing...
+                                                <span className="ml-2">{loadingText}</span>
                                             </>
                                         ) : (
                                             confirmText

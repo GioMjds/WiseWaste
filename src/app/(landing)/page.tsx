@@ -12,8 +12,7 @@ export default function Home() {
             <span className="text-base-sage-light">For Modern Communities</span>
           </h1>
           <p className="text-xl md:text-2xl text-text-on-dark max-w-3xl mx-auto">
-            Revolutionizing neighborhood recycling through AI-powered solutions
-            and community engagement
+            Empowering neighborhoods to manage waste smarter and build cleaner, greener communities together.
           </p>
           <Link
             href="/register"

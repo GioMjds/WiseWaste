@@ -31,8 +31,7 @@ const VerifyOtpPage = () => {
         onSuccess: (response) => {
             if (response && response.user) {
                 setSuccess("OTP verified! Redirecting...");
-                if (response.user.role === 'admin') router.push("/admin");
-                else router.push("/");
+                router.push(`/new-profile/${response.user.id}`);
             }
         },
         onError: (err: any) => {
@@ -218,7 +217,7 @@ const VerifyOtpPage = () => {
                         className={`w-full py-4 rounded-xl font-bold text-lg 
                         ${isPending || otp.some(num => num === "")
                                 ? "bg-gray-300 cursor-not-allowed"
-                                : "bg-button-primary-bg hover:bg-bg-button-hover"} 
+                                : "bg-button-primary-bg hover:bg-bg-button-hover cursor-pointer"} 
                         text-button-primary-text transition-colors duration-300 shadow-lg`}
                         whileHover={!isPending ? { scale: 1.02 } : {}}
                         whileTap={!isPending ? { scale: 0.98 } : {}}

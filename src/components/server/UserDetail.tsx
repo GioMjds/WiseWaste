@@ -65,8 +65,8 @@ export default async function UserDetail() {
                 )}
             </div>
             <div className="ml-2 flex flex-col justify-center items-center">
-                <p className="font-medium text-2xl text-text-primary">{displayName}</p>
-                <p className="capitalize text-xl">{user.role}</p>
+                <p className="font-medium text-xl text-text-primary">{displayName}</p>
+                <p className="capitalize text-lg">{user.role}</p>
             </div>
         </div>
     );
