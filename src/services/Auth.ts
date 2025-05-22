@@ -2,44 +2,36 @@ import { API } from "./AxiosURLs";
 
 export const login = async (email: string, password: string) => {
     try {
-        const response = await API.post(
-            "auth/login",
-            {
-                action: "login",
-                email: email,
-                password: password,
-            },
-            {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-            },
-        );
+        const response = await API.post("auth/login", {
+            action: "login",
+            email: email,
+            password: password,
+        }, {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        });
         return response.data;
     } catch (error) {
         console.error(`Error logging in: ${error}`);
-        throw error;
+        return null;
     }
 };
 
 export const sendRegisterOtp = async (email: string, password: string, confirmPassword: string) => {
     try {
-        const response = await API.post(
-            "auth/send_register_otp",
-            {
-                action: "send_register_otp",
-                email: email,
-                password: password,
-                confirmPassword: confirmPassword,
-            },
-            {
+        const response = await API.post("auth/send_register_otp", {
+            action: "send_register_otp",
+            email: email,
+            password: password,
+            confirmPassword: confirmPassword,
+        }, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
-            },
-        );
+        });
         return response.data;
     } catch (error) {
         console.error(`Error registering: ${error}`);
-        throw error;
+        return null;
     }
 };
 

@@ -3,6 +3,7 @@ import { Outfit } from "next/font/google";
 import { Providers } from "../providers";
 import { Navbar } from "@/layout/Navbar";
 import { Footer } from "@/layout/Footer";
+import { AuthRedirect } from "@/lib/protectRoute";
 import "../../app/globals.css";
 
 const outfit = Outfit({
@@ -20,9 +21,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body className={`${outfit} antialiased`}>
         <Providers>
-          <Navbar />
-          {children}
-          <Footer />
+          <AuthRedirect>
+            <Navbar />
+            {children}
+            <Footer />
+          </AuthRedirect>
         </Providers>
       </body>
     </html>

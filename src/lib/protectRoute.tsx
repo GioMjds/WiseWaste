@@ -20,10 +20,8 @@ export async function AuthRequired({ children }: { children: ReactNode }) {
  */
 export async function AdminRequired({ children }: { children: ReactNode }) {
     const session = await getSession();
-
     if (!session) redirect("/login");
-    if (session.role !== "admin") redirect("/dashboard");
-
+    if (session.role !== "admin") redirect("/resident");
     return <>{children}</>;
 }
 
@@ -32,10 +30,8 @@ export async function AdminRequired({ children }: { children: ReactNode }) {
  */
 export async function ResidentRequired({ children }: { children: ReactNode }) {
     const session = await getSession();
-
     if (!session) redirect("/login");
     if (session.role !== "resident") redirect("/admin");
-
     return <>{children}</>;
 }
 
@@ -44,7 +40,7 @@ export async function ResidentRequired({ children }: { children: ReactNode }) {
  */
 export async function AuthRedirect({ children }: { children: ReactNode }) {
     const session = await getSession();
-    if (session) redirect(session.role === "admin" ? "/admin" : "/dashboard");
+    if (session) redirect(session.role === "admin" ? "/admin" : "/resident");
     return <>{children}</>;
 }
 

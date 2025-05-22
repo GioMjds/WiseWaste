@@ -10,17 +10,7 @@ async function getUserProfileDirect() {
     const cookieStore = cookies();
     const token = (await cookieStore).get("access_token")?.value;
 
-    if (!token) {
-        console.log("No access token found in cookies");
-        return null;
-    }
-
-    const session = await decrypt(token);
-
-    if (!session?.userId) {
-        console.log(`Invalid session data: ${session}`);
-        return null;
-    }
+    const session = await decrypt(token as string);
 
     const user = await prisma.users.findUnique({
         where: { user_id: Number(session.userId) },
@@ -33,11 +23,6 @@ async function getUserProfileDirect() {
             last_name: true
         }
     });
-
-    if (!user) {
-        console.log(`User not found with ID: ${session.userId}`);
-        return null;
-    }
 
     return user;
 }
@@ -59,14 +44,11 @@ export default async function UserDetail() {
         );
     }
 
-    const displayName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email;
-    const shortEmail = user.email.length > 20
-        ? `${user.email.substring(0, 20)}...`
-        : user.email;
+    const displayName = `${user.first_name || ''} ${user.last_name || ''}`.trim();
 
     return (
-        <div className="flex flex-col items-center py-6 border-b border-border-primary">
-            <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-200">
+        <div className="flex items-center justify-center py-6 border-b border-border-primary">
+            <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
                 {user.profile_image ? (
                     <Image
                         src={user.profile_image}
@@ -82,11 +64,9 @@ export default async function UserDetail() {
                     </div>
                 )}
             </div>
-
-            <div className="mt-2 text-center">
-                <p className="font-medium text-text-primary">{displayName}</p>
-                <p className="text-sm text-text-secondary truncate max-w-[200px]">{shortEmail}</p>
-                <p className="capitalize">{user.role}</p>
+            <div className="ml-2 flex flex-col justify-center items-center">
+                <p className="font-medium text-2xl text-text-primary">{displayName}</p>
+                <p className="capitalize text-xl">{user.role}</p>
             </div>
         </div>
     );

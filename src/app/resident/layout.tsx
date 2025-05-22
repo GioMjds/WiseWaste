@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import "../globals.css";
 import Sidebar from "@/layout/Sidebar";
 import UserDetail from "@/components/server/UserDetail";
+import { ResidentRequired } from "@/lib/protectRoute";
 
 const outfit = Outfit({
     variable: "--font-outfit",
@@ -21,8 +22,10 @@ export default function ResidentLayout({ children }: { children: ReactNode }) {
         <html lang="en">
             <body className={`${outfit.variable} antialiased`}>
                 <Providers>
-                    <Sidebar role="resident" userDetails={<UserDetail />} />
-                    {children}
+                    <ResidentRequired>
+                        <Sidebar role="resident" userDetails={<UserDetail />} />
+                        {children}
+                    </ResidentRequired>
                 </Providers>
             </body>
         </html>

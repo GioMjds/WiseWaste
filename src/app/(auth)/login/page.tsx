@@ -117,13 +117,15 @@ const LoginPage = () => {
                             </span>
                         )}
                     </div>
-                    <button
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         type="submit"
                         disabled={isPending}
                         className={`w-full py-2 rounded-lg bg-button-primary-bg text-button-primary-text font-semibold hover:bg-bg-button-hover transition-colors duration-200 shadow-md ${isPending ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                         {isPending ? "Logging in..." : "Login"}
-                    </button>
+                    </motion.button>
                 </form>
                 <div className="text-center mt-4">
                     <span className="text-text-secondary">

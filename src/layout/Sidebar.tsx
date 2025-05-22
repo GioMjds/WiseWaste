@@ -71,7 +71,7 @@ export default function Sidebar({ role, userDetails }: SidebarProps) {
 
                 {userDetails}
 
-                <nav className="mt-6 flex flex-col h-[calc(100%-4rem)]">
+                <nav className="mt-4 flex flex-col">
                     {menuItems.map((item) => {
                         const active = pathname === item.href;
                         return (
@@ -89,7 +89,7 @@ export default function Sidebar({ role, userDetails }: SidebarProps) {
                         );
                     })}
 
-                    <div className="mt-auto p-4 mb-6">
+                    <div className="p-4 mb-6">
                         <motion.button
                             whileTap={{ scale: 0.95 }}
                             className="flex items-center justify-center w-full uppercase p-4 rounded-lg cursor-pointer text-text-primary hover:bg-button-danger hover:text-white transition-colors duration-200"

@@ -2,6 +2,7 @@ import { Outfit } from "next/font/google";
 import { Metadata } from "next";
 import { Providers } from "../providers";
 import { ReactNode } from "react";
+import { AuthRedirect } from "@/lib/protectRoute";
 import "../globals.css";
 
 const outfit = Outfit({
@@ -19,7 +20,9 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         <html lang="en">
             <body className={`${outfit} antialiased`}>
                 <Providers>
-                    {children}
+                    <AuthRedirect>
+                        {children}
+                    </AuthRedirect>
                 </Providers>
             </body>
         </html>
