@@ -167,7 +167,6 @@ const LoginPage = () => {
                             <motion.button
                                 initial={{ y: 20, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
-                                transition={{ delay: 0.8, duration: 0.5 }}
                                 whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(50, 142, 110, 0.3)" }}
                                 whileTap={{ scale: 0.95 }}
                                 type="submit"

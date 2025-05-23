@@ -1,8 +1,6 @@
 
-const RoutesPage = () => {
+export default function RoutesPage() {
   return (
     <div>RoutesPage</div>
   )
 }
-
-export default RoutesPage

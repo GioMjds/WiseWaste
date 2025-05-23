@@ -23,8 +23,12 @@ export default function ResidentLayout({ children }: { children: ReactNode }) {
             <body className={`${outfit.variable} antialiased`}>
                 <Providers>
                     <ResidentRequired>
-                        <Sidebar role="resident" userDetails={<UserDetail />} />
-                        {children}
+                        <div className="flex min-h-screen">
+                            <Sidebar role="resident" userDetails={<UserDetail />} />
+                            <div className="flex-1 ml-64">
+                                {children}
+                            </div>
+                        </div>
                     </ResidentRequired>
                 </Providers>
             </body>

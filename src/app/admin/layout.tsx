@@ -23,8 +23,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             <body className={`${outfit.variable} antialiased`}>
                 <Providers>
                     <AdminRequired>
-                        <Sidebar role="admin" userDetails={<UserDetail />} />
-                        {children}
+                        <div className="flex min-h-screen">
+                            <Sidebar role="admin" userDetails={<UserDetail />} />
+                            <div className="flex-1 ml-64">
+                                {children}
+                            </div>
+                        </div>
                     </AdminRequired>
                 </Providers>
             </body >

@@ -1,8 +1,6 @@
 
-const ComplaintsPage = () => {
+export default function ComplaintsPage() {
   return (
     <div>ComplaintsPage</div>
   )
 }
-
-export default ComplaintsPage

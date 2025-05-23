@@ -22,18 +22,18 @@ interface SidebarProps {
 }
 
 const residentMenu: MenuItem[] = [
-    { label: 'Dashboard', href: '/', icon: <Home size={20} /> },
-    { label: 'Profile', href: '/profile', icon: <User size={20} /> },
-    { label: 'Request Pickup', href: '/request/new', icon: <Calendar size={20} /> },
-    { label: 'Waste Logs', href: '/logs', icon: <ClipboardList size={20} /> },
-    { label: 'Complaints', href: '/complaints', icon: <MessageCircle size={20} /> },
+    { label: 'Dashboard', href: '/resident', icon: <Home size={20} /> },
+    { label: 'Profile', href: '/resident/profile', icon: <User size={20} /> },
+    { label: 'Request Pickup', href: '/resident/pickup', icon: <Calendar size={20} /> },
+    { label: 'Waste Logs', href: '/resident/logs', icon: <ClipboardList size={20} /> },
+    { label: 'Complaints', href: '/resident/complaints', icon: <MessageCircle size={20} /> },
 ];
 
 const adminMenu: MenuItem[] = [
     { label: 'Dashboard', href: '/admin', icon: <PieChart size={20} /> },
-    { label: 'Schedule', href: '/admin/schedule', icon: <Calendar size={20} /> },
+    { label: 'Scheduling', href: '/admin/schedule', icon: <Calendar size={20} /> },
     { label: 'Routes', href: '/admin/routes', icon: <ClipboardList size={20} /> },
-    { label: 'Analytics', href: '/admin/analytics', icon: <PieChart size={20} /> },
+    { label: 'Analytics & Reports', href: '/admin/analytics', icon: <PieChart size={20} /> },
     { label: 'Complaints', href: '/admin/complaints', icon: <MessageCircle size={20} /> },
     { label: 'Manage Users', href: '/admin/users', icon: <Users size={20} /> },
 ];

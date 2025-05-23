@@ -1,8 +1,6 @@
 
-const UsersPage = () => {
+export default function ManageUsersPage() {
   return (
-    <div>UsersPage</div>
+    <div>ManageUsersPage</div>
   )
 }
-
-export default UsersPage

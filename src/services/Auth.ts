@@ -74,16 +74,12 @@ export const verifyRegisterOtp = async (email: string, otp: string) => {
 
 export const logout = async () => {
     try {
-        const response = await API.post(
-            "auth/logout",
-            {
-                action: "logout",
-            },
-            {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-            },
-        );
+        const response = await API.post("auth/logout", {
+            action: "logout",
+        }, {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        });
         return response.data;
     } catch (error) {
         console.error(`Error logging out: ${error}`);
