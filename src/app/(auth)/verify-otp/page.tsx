@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const VerifyOtpPage = () => {
+export default function VerifyOtpPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const email = searchParams.get("email") || "";
@@ -22,6 +22,10 @@ const VerifyOtpPage = () => {
 
     const [cooldownTime, setCooldownTime] = useState(0);
     const [isCooldown, setIsCooldown] = useState(false);
+
+    useEffect(() => {
+        if (!email) router.replace("/register");
+    }, [email, router]);
 
     const { mutate, isPending } = useMutation({
         mutationFn: async () => {
@@ -72,7 +76,7 @@ const VerifyOtpPage = () => {
             const newOtp = [...otp];
             newOtp[index] = value;
             setOtp(newOtp);
-
+            
             if (index < 5) inputRefs.current[index + 1]?.focus();
         } else if (value === "") {
             const newOtp = [...otp];
@@ -91,7 +95,7 @@ const VerifyOtpPage = () => {
         e.preventDefault();
         const pasteData = e.clipboardData.getData("text/plain").slice(0, 6);
         const newOtp = [...otp];
-
+        
         pasteData.split("").forEach((char, i) => {
             if (i < 6 && /^[0-9]$/.test(char)) {
                 newOtp[i] = char;
@@ -122,6 +126,8 @@ const VerifyOtpPage = () => {
             setResendLoading(false);
         }
     }
+
+    if (!email) return null;
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-bg-primary relative overflow-hidden">
@@ -267,5 +273,3 @@ const VerifyOtpPage = () => {
         </div>
     );
 };
-
-export default VerifyOtpPage;

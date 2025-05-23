@@ -93,6 +93,7 @@ export const updateProfile = async (profileData: {
     phone: string;
     address: string;
     profileImage?: string;
+    userId: string;
 }) => {
     try {
         const response = await API.patch("auth/profile", profileData, {

@@ -4,8 +4,8 @@ import { updateProfile } from '@/services/Auth';
 import { useMutation } from '@tanstack/react-query';
 import { motion, useAnimate } from 'framer-motion';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 type FormData = {
@@ -17,11 +17,18 @@ type FormData = {
 };
 
 export default function CompleteProfilePage() {
+    const router = useRouter();
+    const params = useParams();
+    const newUserId = params?.newUserId as string | undefined;
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [scope, animate] = useAnimate();
-    const router = useRouter();
+
+    useEffect(() => {
+        const registrationInProgress = typeof window !== 'undefined' && localStorage.getItem('registrationInProgress');
+        if (!newUserId || !registrationInProgress) router.replace('/register');
+    }, [newUserId, router]);
 
     const mutation = useMutation({
         mutationFn: async (data: FormData) => {
@@ -42,17 +49,22 @@ export default function CompleteProfilePage() {
                 reader.readAsDataURL(file);
                 profileImageUrl = await fileReadPromise;
             }
+            if (!newUserId) throw new Error('User ID is missing');
             return await updateProfile({
                 firstName: data.firstName,
                 lastName: data.lastName,
                 phone: data.phone_number,
                 address: data.address,
                 profileImage: profileImageUrl,
+                userId: newUserId,
             });
         },
         onSuccess: (data) => {
             if (data?.user?.profile_image) {
                 setPreviewImage(data.user.profile_image);
+            }
+            if (typeof window !== 'undefined') {
+                localStorage.removeItem('registrationInProgress');
             }
             router.push('/resident');
         }
@@ -76,6 +88,17 @@ export default function CompleteProfilePage() {
             reader.readAsDataURL(file);
         }
     };
+
+    if (!newUserId || typeof window !== 'undefined'
+        && !localStorage.getItem('registrationInProgress')) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-bg-primary">
+                <span className="text-base-green-dark text-lg font-semibold animate-pulse">
+                    Redirecting...
+                </span>
+            </div>
+        )
+    }
 
     return (
         <motion.div
