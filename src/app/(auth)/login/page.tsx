@@ -2,10 +2,12 @@
 "use client";
 
 import { login } from "@/services/Auth";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -167,13 +169,14 @@ const LoginPage = () => {
                             <motion.button
                                 initial={{ y: 20, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 0.9, duration: 0.5 }}
                                 whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(50, 142, 110, 0.3)" }}
                                 whileTap={{ scale: 0.95 }}
                                 type="submit"
                                 disabled={isPending}
                                 className={`w-full py-4 rounded-2xl bg-gradient-to-r from-base-green-medium to-base-green-light text-white font-semibold shadow-lg transition-all duration-300 
-                                    ${isPending ? "opacity-50 cursor-not-allowed" 
-                                    : "cursor-pointer hover:shadow-xl"}`}
+                                    ${isPending ? "opacity-50 cursor-not-allowed"
+                                        : "cursor-pointer hover:shadow-xl"}`}
                             >
                                 {isPending ? (
                                     <div className="flex items-center justify-center">
@@ -185,6 +188,16 @@ const LoginPage = () => {
                                 )}
                             </motion.button>
                         </form>
+
+                        {/* Google Login Button */}
+                        <button
+                            type="button"
+                            onClick={() => signIn('google')}
+                            className="w-full py-4 mt-4 cursor-pointer rounded-2xl bg-white/10 backdrop-blur-md text-base-green-dark font-semibold shadow-lg transition-all duration-300 hover:bg-white/20 hover:shadow-xl flex items-center justify-center gap-2"
+                        >
+                            <FontAwesomeIcon icon={faGoogle} />
+                            Sign in with Google
+                        </button>
 
                         <motion.div
                             initial={{ opacity: 0 }}

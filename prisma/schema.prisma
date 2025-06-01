@@ -7,21 +7,63 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  user_id       Int               @id @default(autoincrement())
+model User {
+  id            Int              @id @default(autoincrement())
+  name          String?
+  email         String?          @unique
+  emailVerified DateTime?
+  image         String?
+  // Custom fields
+  password      String?
+  role          RoleType         @default(resident)
   first_name    String?
   last_name     String?
-  email         String            @unique
-  password      String
-  phone_number  String?           @unique
+  phone_number  String?          @unique
   address       String?
   profile_image String?
-  created_at    DateTime          @default(now())
-  role          RoleType          @default(resident)
+  created_at    DateTime         @default(now())
+  // NextAuth relations
+  accounts      Account[]
+  sessions      Session[]
+  // Your app relations (update as needed)
   complaints    Complaint[]
   notifications Notification[]
   requests      ServiceRequest[]
   waste_logs    WasteLog[]
+}
+
+model Account {
+  id                Int     @id @default(autoincrement())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 model WasteType {
@@ -34,12 +76,12 @@ model WasteType {
 
 model ServiceRequest {
   request_id     Int           @id @default(autoincrement())
-  user_id        Int
+  userId         Int
   waste_type_id  Int
   requested_date DateTime
   status         RequestStatus @default(pending)
   pickups        Pickup[]
-  user           Users         @relation(fields: [user_id], references: [user_id])
+  user           User          @relation(fields: [userId], references: [id])
   waste_type     WasteType     @relation(fields: [waste_type_id], references: [waste_type_id])
 }
 
@@ -76,34 +118,34 @@ model RouteAssignment {
 
 model Complaint {
   complaint_id Int             @id @default(autoincrement())
-  user_id      Int
+  userId       Int
   pickup_id    Int?
   description  String
   status       ComplaintStatus @default(open)
   created_at   DateTime        @default(now())
   updated_at   DateTime        @updatedAt
   pickup       Pickup?         @relation(fields: [pickup_id], references: [pickup_id])
-  user         Users           @relation(fields: [user_id], references: [user_id])
+  user         User            @relation(fields: [userId], references: [id])
 }
 
 model Notification {
   notification_id Int      @id @default(autoincrement())
-  user_id         Int
+  userId          Int
   title           String
   message         String
   sent_at         DateTime @default(now())
   is_read         Boolean  @default(false)
-  user            Users    @relation(fields: [user_id], references: [user_id])
+  user            User     @relation(fields: [userId], references: [id])
 }
 
 model WasteLog {
   log_id        Int       @id @default(autoincrement())
-  user_id       Int
+  userId        Int
   waste_type_id Int
   quantity_kg   Decimal   @db.Decimal(6, 2)
   log_date      DateTime
   created_at    DateTime  @default(now())
-  user          Users     @relation(fields: [user_id], references: [user_id])
+  user          User      @relation(fields: [userId], references: [id])
   waste_type    WasteType @relation(fields: [waste_type_id], references: [waste_type_id])
 }
 

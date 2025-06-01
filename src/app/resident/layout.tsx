@@ -2,6 +2,7 @@ import { Outfit } from "next/font/google";
 import { Metadata } from "next";
 import { Providers } from "../providers";
 import { ReactNode } from "react";
+import { SessionProvider } from "next-auth/react";
 import "../globals.css";
 import Sidebar from "@/layout/Sidebar";
 import UserDetail from "@/components/server/UserDetail";
@@ -21,16 +22,18 @@ export default function ResidentLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="en">
             <body className={`${outfit.variable} antialiased`}>
-                <Providers>
-                    <ResidentRequired>
-                        <div className="flex min-h-screen">
-                            <Sidebar role="resident" userDetails={<UserDetail />} />
-                            <div className="flex-1 ml-64">
-                                {children}
+                <SessionProvider>
+                    <Providers>
+                        <ResidentRequired>
+                            <div className="flex min-h-screen">
+                                <Sidebar role="resident" userDetails={<UserDetail />} />
+                                <div className="flex-1 ml-64">
+                                    {children}
+                                </div>
                             </div>
-                        </div>
-                    </ResidentRequired>
-                </Providers>
+                        </ResidentRequired>
+                    </Providers>
+                </SessionProvider>
             </body>
         </html>
     );

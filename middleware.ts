@@ -56,8 +56,10 @@ export async function middleware(request: NextRequest) {
             const session = verified.payload;
             const userRole = session.role as "admin" | "resident";
 
-            if (pathname === "/admin" && userRole === "admin") return NextResponse.next();
-            if (pathname === "/resident" && userRole === "resident") return NextResponse.next();
+            if (pathname === "/admin" && userRole === "admin")
+                return NextResponse.next();
+            if (pathname === "/resident" && userRole === "resident")
+                return NextResponse.next();
 
             return NextResponse.next();
         } catch {

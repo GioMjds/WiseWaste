@@ -24,10 +24,10 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        const user = await prisma.users.findUnique({
-            where: { user_id: Number(session.userId) },
+        const user = await prisma.user.findUnique({
+            where: { id: Number(session.userId) },
             select: {
-                user_id: true,
+                id: true,
                 email: true,
                 role: true,
                 profile_image: true,
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
             {
                 message: "User profile fetched successfully",
                 user: {
-                    id: user.user_id,
+                    id: user.id,
                     email: user.email,
                     role: user.role,
                     profile_image: user.profile_image,
@@ -82,9 +82,12 @@ export async function PATCH(request: NextRequest) {
 
         const session = await decrypt(accessToken);
         if (!session?.userId) {
-            return NextResponse.json({
-                error: "Invalid session",
-            }, { status: 401 });
+            return NextResponse.json(
+                {
+                    error: "Invalid session",
+                },
+                { status: 401 },
+            );
         }
 
         const body = await request.json();
@@ -103,11 +106,11 @@ export async function PATCH(request: NextRequest) {
         if (address) updateData.address = address;
         if (profileImage) updateData.profile_image = profileImage;
 
-        const updatedUser = await prisma.users.update({
-            where: { user_id: Number(session.userId) },
+        const updatedUser = await prisma.user.update({
+            where: { id: Number(session.userId) },
             data: updateData,
             select: {
-                user_id: true,
+                id: true,
                 email: true,
                 role: true,
                 profile_image: true,

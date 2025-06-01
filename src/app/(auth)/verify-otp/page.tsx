@@ -35,6 +35,9 @@ export default function VerifyOtpPage() {
         onSuccess: (response) => {
             if (response && response.user) {
                 setSuccess("OTP verified! Redirecting...");
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem('registrationInProgress', 'true');
+                }
                 router.push(`/new-profile/${response.user.id}`);
             }
         },
@@ -76,7 +79,7 @@ export default function VerifyOtpPage() {
             const newOtp = [...otp];
             newOtp[index] = value;
             setOtp(newOtp);
-            
+
             if (index < 5) inputRefs.current[index + 1]?.focus();
         } else if (value === "") {
             const newOtp = [...otp];
@@ -95,7 +98,7 @@ export default function VerifyOtpPage() {
         e.preventDefault();
         const pasteData = e.clipboardData.getData("text/plain").slice(0, 6);
         const newOtp = [...otp];
-        
+
         pasteData.split("").forEach((char, i) => {
             if (i < 6 && /^[0-9]$/.test(char)) {
                 newOtp[i] = char;

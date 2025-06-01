@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { motion } from "framer-motion";
-import Image from "next/image";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
 import { sendRegisterOtp } from "@/services/Auth";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMutation } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 interface RegisterForm {
     email: string;
@@ -325,8 +327,9 @@ const RegisterPage = () => {
                                 whileTap={{ scale: 0.95 }}
                                 type="submit"
                                 disabled={isPending}
-                                className={`w-full py-4 rounded-2xl bg-gradient-to-r from-base-green-medium to-base-green-light text-white font-semibold shadow-lg transition-all duration-300 ${isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:shadow-xl"
-                                    }`}
+                                className={`w-full py-4 rounded-2xl bg-gradient-to-r from-base-green-medium to-base-green-light text-white font-semibold shadow-lg transition-all duration-300 
+                                    ${isPending ? "opacity-50 cursor-not-allowed"
+                                        : "cursor-pointer hover:shadow-xl"}`}
                             >
                                 {isPending ? (
                                     <div className="flex items-center justify-center">
@@ -336,6 +339,18 @@ const RegisterPage = () => {
                                 ) : (
                                     "Register"
                                 )}
+                            </motion.button>
+
+                            {/* Google Register button */}
+                            <motion.button
+                                type='button'
+                                onClick={() => signIn('google')}
+                                className="w-full py-4 cursor-pointer rounded-2xl bg-white/10 backdrop-blur-md text-base-green-dark font-semibold shadow-lg transition-all duration-300 hover:bg-white/20 hover:shadow-xl flex items-center justify-center gap-2"
+                                whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(50, 142, 110, 0.3)" }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <FontAwesomeIcon icon={faGoogle} />
+                                Sign up with Google
                             </motion.button>
                         </form>
 

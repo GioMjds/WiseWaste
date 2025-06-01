@@ -12,16 +12,18 @@ async function getUserProfileDirect() {
 
     const session = await decrypt(token as string);
 
-    const user = await prisma.users.findUnique({
-        where: { user_id: Number(session.userId) },
+    const user = await prisma.user.findUnique({
+        where: { id: Number(session.userId) },
         select: {
-            user_id: true,
+            id: true,
             email: true,
             role: true,
             profile_image: true,
             first_name: true,
-            last_name: true
-        }
+            last_name: true,
+            phone_number: true,
+            address: true,
+        },
     });
 
     return user;
